@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    char vetorMapa[10]="..........";
+    char strXO[3]="*XO";
+    int nunXO[2];
+    int vesJogador=1,validadorJogada=0,jogada=0;
+    int comtadorLupID,lupprincipal=0,lupID,lupV2,iposterior,validaEntrada=0,valid_input=0,ianterior,ant_pos,inicioLupID,fimLupID,fimGame=0;
+    
+    do{
+        if(fimGame==0){
+            if (validadorJogada == 1){//valida se ouve jogada 
+                if (vesJogador == 1){//troca a vez do jogador 
+                    vesJogador=2;
+                }else{
+                    vesJogador=1;
+                }
+                validadorJogada=0;//reseta o validador
+                lupprincipal++;//contador do lup
+            }  
+        }else{
+            lupprincipal=8;
+            printf("vitoria jogador %d\n");
+        }
+        
+        system("cls");
+        //mapa do game 
+        printf(" | %c | %c | %c\n",vetorMapa[1],vetorMapa[2],vetorMapa[3]);
+        printf("  -----------\n");
+        printf(" | %c | %c | %c\n",vetorMapa[4],vetorMapa[5],vetorMapa[6]);
+        printf("  -----------\n");
+        printf(" | %c | %c | %c\n",vetorMapa[7],vetorMapa[8],vetorMapa[9]);
+    
+        if(fimGame==0){
+            
+            printf("\njogador %d:",vesJogador);
+            validaEntrada=scanf("%d",&jogada);//onde vc escolhe a onde vai jogar 
+            
+            if(valid_input!=1){//ele limpa o jogada casso um super usuario seja burro 
+                printf("digite um numero de 1 a 9 \n",valid_input);
+            
+                while (getchar() != '\n');
+            
+            }
+            
+            if(jogada>=1&&jogada<=9||jogada==11){//valida se o local onde vc jogou existe
+                if (vetorMapa[jogada]=='.'){//valida se o local esta vazio
+                    vetorMapa[jogada]=strXO[vesJogador];//coloca "X" ou "O" de pende da vez do jogador 
+                    validadorJogada = 1;//marcador para validar jogada 
+                }else{//caso não valide.
+                    printf("esta jogada Não foi efetuada\n");
+                }
+            }else{//caso não exista 
+                printf("esta jogada Não foi efetuada\n");
+            }
+            inicioLupID=2,comtadorLupID=3,fimLupID=8,lupV2=0,ant_pos=1;//resetar o for 
+            
+            
+            do{
+            for(lupID=inicioLupID;lupID<=fimLupID;lupID=lupID+comtadorLupID){//lup ussado para corre pelo vetor e validar a vitoria 
+                
+                iposterior=lupID+ant_pos,ianterior=lupID-ant_pos;//tem o calculo que poe o posterior e o anterior dependendo de qual numero do vetor ira validar 
+                
+                if(vetorMapa[ianterior]==strXO[vesJogador]&&vetorMapa[lupID]==strXO[vesJogador]&&vetorMapa[iposterior]==strXO[vesJogador]){//valida se o lugar no jogo é iqual a seu antecessor e o sucessor
+                    vetorMapa[ianterior]=strXO[0],vetorMapa[lupID]=strXO[0],vetorMapa[iposterior]=strXO[0];
+                    fimGame=1;
+                    
+                }
+            }
+            
+                ant_pos=3,inicioLupID=4,fimLupID=6,comtadorLupID=1;//muda o metodo de busca do if para olhar em colunas
+            if(lupV2>=1){
+                ant_pos=2,inicioLupID=5,fimLupID=5,comtadorLupID=1;
+                if(lupV2==2){
+                    ant_pos=ant_pos+2;
+                    }
+                }
+            
+            lupV2++;
+            }while(lupV2<=3);
+        } 
+    }while(lupprincipal!=8);//repetidor
+    return 0;
+}
